@@ -13,7 +13,8 @@ function totalWordCount (string) {
 }
 
 function uniqueWordCount(string) {
-	var split = string.split(" "); 
+	var withoutPunctuation = string.replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g,"");
+	var split = withoutPunctuation.split(" "); 
 	var database = {}; 
 	var uniqueCount = 0; 
 	
@@ -30,12 +31,14 @@ function uniqueWordCount(string) {
 	return uniqueCount;
 }
 
+
 function averageWordLength(string) {
 	var split = string.split(" ");
 	var lengthArray = []; 
 	var letters = /[a-z]/;
 	
 	split.forEach(function (word) {
+		word.replace(/\./g,' ');
 		if (word.match(letters)) {
 			lengthArray.push(word.length);
 		}
@@ -54,11 +57,20 @@ function averageSentenceLength (string) {
 	var split = string.split(".");
 	var sentenceLengths = []; 
 	var temp; 
+	var letters = /[a-z]/;
+	var count; 
 	
 	split.forEach(function(sentence) {
-		temp = sentence.replace(/\s/g, '').length; 
-		sentenceLengths.push(temp);
+		count = 0; 
+		temp = sentence.split(" ");
+		temp.forEach(function(words) {
+			if (words.match(letters)) {
+				count++; 
+			}
+		});
+		sentenceLengths.push(count);
 	});
+
 	
 	var sum = sentenceLengths.reduce(function(acc, current) {
 		return acc + current; 
@@ -71,6 +83,7 @@ function averageSentenceLength (string) {
 }
 
 
+
 $(function() {
   	
  $('#user-input').submit(function(e) {
@@ -81,6 +94,7 @@ $(function() {
    $(".js-word-count").append('</br>' + totalWordCount(userInput));
    $(".js-unique-word").append('</br>' + uniqueWordCount(userInput));
    $(".js-average-word").append('</br>' + averageWordLength(userInput));
+   console.log(averageSentenceLength(userInput));
    $(".js-average-sentence").append('</br>' + averageSentenceLength(userInput));
 
    
