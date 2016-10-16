@@ -5,10 +5,10 @@ $(function() {
     var userInput = $('#user-text').val();
     var arrayOfWords = getArrayofWords(userInput);
    $("dl").removeClass("hidden");
-   $(".js-word-count").append('</br>' + totalWordCount(arrayOfWords));
-   $(".js-unique-word").append('</br>' + uniqueWordCount(arrayOfWords));
-   $(".js-average-word").append('</br>' + averageWordLength(arrayOfWords));
-   $(".js-average-sentence").append('</br>' + averageSentenceLength(userInput,arrayOfWords));
+   $(".js-word-count").empty().append(totalWordCount(arrayOfWords));
+   $(".js-unique-word").empty().append(uniqueWordCount(arrayOfWords));
+   $(".js-average-word").empty().append(averageWordLength(arrayOfWords));
+   $(".js-average-sentence").empty().append(averageSentenceLength(userInput,arrayOfWords));
   });
 
  });
@@ -75,7 +75,13 @@ function averageWordLength(wordArray) {
 }
 
 function averageSentenceLength (string, wordArray) {
-  var numSentences = string.match(/[.!?]+/g).length;
+	var numSentences;
+	if(string.match(/[.!?]+/g)) {
+		numSentences = string.match(/[.!?]+/g).length;
+	}
+	else {
+		numSentences = 1;
+	}
   var wordCount = wordArray.length;
   
   return (wordCount / numSentences).toFixed(2);
